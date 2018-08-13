@@ -6,13 +6,13 @@ class FiguresController < ApplicationController
   end
 
   #new
-  get '/figures/new' do 
+  get '/figures/new' do
     erb :'figures/new'
-  end  
+  end
 
-  post '/figures' do 
+  post '/figures' do
 
-    @figure = Figure.create(name: params[:name]) 
+    @figure = Figure.create(name: params[:name])
     redirect to '/figures/#{@figure.id}'
   end
 
@@ -32,7 +32,7 @@ class FiguresController < ApplicationController
     @figure = Figure.find_by_id(params[:id]) #should I find it by name?
    @figure = Figure.update(name: params[:name])
     redirect to '/figures/#{@figure.id}'
-  
+
   end
 
 
