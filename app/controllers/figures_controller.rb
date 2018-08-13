@@ -5,35 +5,42 @@ class FiguresController < ApplicationController
     erb :'figures/index'
   end
 
-  #new
   get '/figures/new' do
     erb :'figures/new'
   end
 
-  post '/figures' do
-
-    @figure = Figure.create(name: params[:name])
-    redirect to '/figures/#{@figure.id}'
-  end
-
-  #show
   get '/figures/:id' do
     @figure = Figure.find_by_id(params[:id])
     erb :'figures/show'
   end
 
-  #edit
+  post '/figures' do
+    figure = Figure.create(params[:figure])
+    unless params[:title][:name].empty?
+      figure.titles.create(params[:title])
+    end
+    unless params[:landmark][:name].empty?
+      figure.landmarks.create(params[:landmark])
+    end
+
+    redirect "/figures/#{figure.id}"
+  end
+
   get '/figures/:id/edit' do
     @figure = Figure.find_by_id(params[:id])
     erb :'figures/edit'
   end
 
-  post '/figures/:id' do
-    @figure = Figure.find_by_id(params[:id]) #should I find it by name?
-   @figure = Figure.update(name: params[:name])
-    redirect to '/figures/#{@figure.id}'
-
+  patch '/figures/:id' do
+    figure = Figure.find_by_id(params[:id])
+    figure.update(params[:figure])
+    unless params[:title][:name].empty?
+      figure.titles.create(params[:title])
+    end
+    unless params[:landmark][:name].empty?
+      figure.landmarks.create(params[:landmark])
+    end
+    redirect "/figures/#{figure.id}"
   end
-
 
 end
